@@ -23,7 +23,7 @@ class EventHandler {
 
     _registerEvent(els, event, handler, selector) {
         var that = this;
-        if (!Array.isArray(els))
+        if (!(Array.isArray(els) || els instanceof NodeList))
             els = [els];
         for (var i = 0 ; i < els.length ; i++) {
             var el = els[i];
@@ -43,7 +43,7 @@ class EventHandler {
 
     _unregisterEvent(els, event, handler) {
         var that = this;
-        if (!Array.isArray(els))
+        if (!(Array.isArray(els) || els instanceof NodeList))
             els = [els];
         for (var i = 0 ; i < els.length ; i++) {
             var el = els[i];
