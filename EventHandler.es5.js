@@ -20,7 +20,7 @@ EventHandler.prototype._eh_initEvents = function() {
 
 EventHandler.prototype._registerEvent = function(els, event, handler, selector) {
     var that = this;
-    if (!Array.isArray(els))
+    if (!(Array.isArray(els) || els instanceof NodeList))
         els = [els];
     for (var i = 0 ; i < els.length ; i++) {
         var el = els[i];
@@ -40,7 +40,7 @@ EventHandler.prototype._registerEvent = function(els, event, handler, selector) 
 
 EventHandler.prototype._unregisterEvent = function(els, event, handler) {
     var that = this;
-    if (!Array.isArray(els))
+    if (!(Array.isArray(els) || els instanceof NodeList))
         els = [els];
     for (var i = 0 ; i < els.length ; i++) {
         var el = els[i];
