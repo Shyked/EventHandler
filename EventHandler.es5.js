@@ -142,7 +142,7 @@ EventHandler.prototype._trigger = function(ev) {
         }
         if (deleteListeners.length > 0) {
             for (var i = 0 ; i < deleteListeners.length ; i++) {
-                this.off(ev, deleteListeners[i])
+                this.off(ev, deleteListeners[i].handler)
             }
         }
     }
