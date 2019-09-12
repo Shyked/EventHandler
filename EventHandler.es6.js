@@ -145,7 +145,7 @@ class EventHandler {
             }
             if (deleteListeners.length > 0) {
                 for (var i = 0 ; i < deleteListeners.length ; i++) {
-                    this.off(ev, deleteListeners[i])
+                    this.off(ev, deleteListeners[i].handler)
                 }
             }
         }
