@@ -47,10 +47,6 @@ class EventHandler {
             els = [els];
         for (var i = 0 ; i < els.length ; i++) {
             var el = els[i];
-            var handlerOverload = function(e) {
-                if (!selector) handler.apply(that, arguments);
-                else if (e.target.matches(selector)) handler.apply(that, arguments);
-            };
             for (var idE = 0 ; idE < this._eh_extEvents.length ; idE++) {
                 if (this._eh_extEvents[idE].el == el
                     && this._eh_extEvents[idE].event == event
