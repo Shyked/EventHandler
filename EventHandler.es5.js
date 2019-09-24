@@ -18,7 +18,11 @@ EventHandler.prototype._eh_initEvents = function() {
 /* EXTERNAL */
 /* For DOM modifications */
 
-EventHandler.prototype._registerEvent = function(els, event, handler, selector) {
+EventHandler.prototype._registerEvent = function(els, event, handler, selector, options) {
+    if (typeof selector != "string") {
+        options = selector;
+        selector = null;
+    }
     var that = this;
     if (!(Array.isArray(els) || els instanceof NodeList))
         els = [els];
@@ -34,7 +38,7 @@ EventHandler.prototype._registerEvent = function(els, event, handler, selector) 
             handler: handlerOverload,
             referenceHandler: handler
         })
-        el.addEventListener(event, handlerOverload);
+        el.addEventListener(event, handlerOverload, options);
     }
 };
 

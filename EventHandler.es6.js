@@ -21,7 +21,11 @@ class EventHandler {
     /* EXTERNAL */
     /* For DOM modifications */
 
-    _registerEvent(els, event, handler, selector) {
+    _registerEvent(els, event, handler, selector, options) {
+        if (typeof selector != "string") {
+            options = selector;
+            selector = null;
+        }
         var that = this;
         if (!(Array.isArray(els) || els instanceof NodeList))
             els = [els];
@@ -37,7 +41,7 @@ class EventHandler {
                 handler: handlerOverload,
                 referenceHandler: handler
             })
-            el.addEventListener(event, handlerOverload);
+            el.addEventListener(event, handlerOverload, options);
         }
     };
 
