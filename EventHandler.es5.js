@@ -15,6 +15,10 @@ EventHandler.prototype._eh_initEvents = function() {
     });
 };
 
+EventHandler.prototype._eh_isElementsArray = function(obj) {
+  return Array.isArray(obj) || obj instanceof NodeList || obj instanceof HTMLCollection;
+};
+
 /* EXTERNAL */
 /* For DOM modifications */
 
@@ -24,7 +28,7 @@ EventHandler.prototype._registerEvent = function(els, event, handler, selector, 
         selector = null;
     }
     var that = this;
-    if (!(Array.isArray(els) || els instanceof NodeList))
+    if (!this._eh_isElementsArray(els))
         els = [els];
     for (var i = 0 ; i < els.length ; i++) {
         var el = els[i];
@@ -44,7 +48,7 @@ EventHandler.prototype._registerEvent = function(els, event, handler, selector, 
 
 EventHandler.prototype._unregisterEvent = function(els, event, handler) {
     var that = this;
-    if (!(Array.isArray(els) || els instanceof NodeList))
+    if (!this._eh_isElementsArray(els))
         els = [els];
     for (var i = 0 ; i < els.length ; i++) {
         var el = els[i];

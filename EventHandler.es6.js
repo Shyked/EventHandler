@@ -18,6 +18,10 @@ class EventHandler {
         });
     };
 
+    _eh_isElementsArray(obj) {
+        return Array.isArray(obj) || obj instanceof NodeList || obj instanceof HTMLCollection;
+    };
+
     /* EXTERNAL */
     /* For DOM modifications */
 
@@ -27,7 +31,7 @@ class EventHandler {
             selector = null;
         }
         var that = this;
-        if (!(Array.isArray(els) || els instanceof NodeList))
+        if (!this._eh_isElementsArray(els))
             els = [els];
         for (var i = 0 ; i < els.length ; i++) {
             var el = els[i];
@@ -47,7 +51,7 @@ class EventHandler {
 
     _unregisterEvent(els, event, handler) {
         var that = this;
-        if (!(Array.isArray(els) || els instanceof NodeList))
+        if (!this._eh_isElementsArray(els))
             els = [els];
         for (var i = 0 ; i < els.length ; i++) {
             var el = els[i];
