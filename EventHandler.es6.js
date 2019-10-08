@@ -161,7 +161,15 @@ class EventHandler {
             handler: handler,
             times: times || -1
         });
-        return { event: ev, handler: handler };
+        return { event: ev, handler: handler, until: (obj, untilEv) => {
+            if (typeof obj == 'string') {
+                untilEv = obj;
+                obj = this;
+            }
+            obj.once(untilEv, function() {
+                this.off(ev, handler);
+            });
+        } };
     };
 
     once(ev, handler) {

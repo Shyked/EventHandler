@@ -9,10 +9,10 @@ var EventHandler = function() {
 };
 
 EventHandler.prototype._eh_initEvents = function() {
-    this.on('destroy', () => {
+    this.on('destroy', function() {
         this._unregisterEvents();
         this._clearTimeouts();
-    });
+    }.bind(this));
 };
 
 EventHandler.prototype._eh_isElementsArray = function(obj) {
@@ -153,12 +153,21 @@ EventHandler.prototype._trigger = function(ev) {
 };
 
 EventHandler.prototype.on = function(ev, handler, times) {
+    var that = this;
     if (!this._eh_events[ev]) this._eh_events[ev] = [];
     this._eh_events[ev].push({
         handler: handler,
         times: times || -1
     });
-    return { event: ev, handler: handler };
+    return { event: ev, handler: handler, until: function(obj, untilEv) {
+        if (typeof obj == 'string') {
+            untilEv = obj;
+            obj = that;
+        }
+        obj.once(untilEv, function() {
+            that.off(ev, handler);
+        });
+    } };
 };
 
 EventHandler.prototype.once = function(ev, handler) {
@@ -188,7 +197,7 @@ EventHandler.prototype.off = function(ev, handler) {
  * @return {Promise}
  */
 EventHandler.prototype.when = function(eventName, callback) {
-    var promiseFunction = (resolve, reject) => {
+    var promiseFunction = function(resolve, reject) {
         if (!this._eh_eventCheckpoints[eventName]) this._eh_eventCheckpoints[eventName] = [];
         if (this._eh_eventCheckpoints[eventName] === true) {
             resolve();
@@ -198,7 +207,7 @@ EventHandler.prototype.when = function(eventName, callback) {
             this._eh_eventCheckpoints[eventName].push(resolve);
             if (callback) this._eh_eventCheckpoints[eventName].push(callback);
         }
-    };
+    }.bind(this);
     if (Promise) return new Promise(promiseFunction);
     else return promiseFunction(function() {}, function() {});
 };
@@ -210,9 +219,9 @@ EventHandler.prototype.didEventHappen = function(eventName) {
 EventHandler.prototype._eventHappened = function(eventName) {
     if (this._eh_eventCheckpoints[eventName] !== true) {
         if (Array.isArray(this._eh_eventCheckpoints[eventName])) {
-            this._eh_eventCheckpoints[eventName].forEach(resolve => {
+            this._eh_eventCheckpoints[eventName].forEach(function(resolve) {
                 resolve();
-            });
+            }.bind(this));
         }
         this._eh_eventCheckpoints[eventName] = true;
     }
@@ -221,10 +230,10 @@ EventHandler.prototype._eventHappened = function(eventName) {
 /* TIMEOUTS */
 
 EventHandler.prototype._setTimeout = function(handler, time) {
-    var timeoutId = setTimeout(() => {
+    var timeoutId = setTimeout(function() {
         this._clearTimeout(timeoutId);
         handler();
-    }, time);
+    }.bind(this), time);
     this._eh_timeouts.push(timeoutId);
     return timeoutId;
 };
