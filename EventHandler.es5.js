@@ -55,8 +55,8 @@ EventHandler.prototype._unregisterEvent = function(els, event, handler) {
         for (var idE = 0 ; idE < this._eh_extEvents.length ; idE++) {
             if (this._eh_extEvents[idE].el == el
                 && this._eh_extEvents[idE].event == event
-                && this._eh_extEvents[idE].referenceHandler == handler) {
-                el.removeEventListener(this._eh_extEvents[idE], this._eh_extEvents[idE].referenceHandler);
+                && (this._eh_extEvents[idE].referenceHandler == handler || !handler)) {
+                el.removeEventListener(this._eh_extEvents[idE].event, this._eh_extEvents[idE].handler);
                 this._eh_extEvents.splice(idE, 1);
                 idE--;
             }
