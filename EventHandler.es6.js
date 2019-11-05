@@ -166,7 +166,7 @@ class EventHandler {
                 untilEv = obj;
                 obj = this;
             }
-            obj.once(untilEv, function() {
+            obj.once(untilEv, () => {
                 this.off(ev, handler);
             });
         } };
