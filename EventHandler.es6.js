@@ -202,8 +202,12 @@ class EventHandler {
         var promiseFunction = (resolve, reject) => {
             if (!this._eh_eventCheckpoints[eventName]) this._eh_eventCheckpoints[eventName] = [];
             if (this._eh_eventCheckpoints[eventName] === true) {
-                resolve();
-                if (callback) callback();
+                try {
+                    resolve();
+                    if (callback) callback();
+                } catch (e) {
+                    console.error(e);
+                }
             }
             else {
                 this._eh_eventCheckpoints[eventName].push(resolve);
