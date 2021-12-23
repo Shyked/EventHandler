@@ -249,7 +249,7 @@ export class EventHandler<CustomOnEvents extends OnEvents = OnEvents> {
         try {
           handlersCopy[i].handler.call(this, ...args)
         } catch (e) {
-          Rollbar.error(e)
+          console.error(e)
         }
         if (!handlersCopy[i]) i--
         else {
