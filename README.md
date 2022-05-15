@@ -111,13 +111,13 @@ class Friend extends EventHandler<{
 }
 
 class You extends EventHandler {
-  constructor (friend) {
+  constructor (friend: Friend) {
     this._listen(friend, 'smile', (bigSmile) => {
       this.changeState(STATE.happy)
     })
   }
 
-  changeState (state): void {
+  changeState (state: number): void {
     if (state == STATE.happy) {
       console.log('You are happy!')
     }
